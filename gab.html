@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <title>Gab</title>
+
+    <link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/smoothness/jquery-ui.css'>
+    <link rel='stylesheet' href='jquery.contextMenu.css'>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js'></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.js'></script>
+    <script src='jquery.contextMenu.js'></script>
+    <script src='jquery.jeditable.js'></script>
+    <!--<link rel='stylesheet' href='jquery-ui-1.8.22.custom.css'>
+    <script src='jquery-1.8.0.min.js'></script>
+    <script src='jquery-ui-1.8.22.custom.min.js'></script> -->
+    <script src='strophe.js'></script>
+    <script src='strophe.muc.js'></script>
+    <script src='strophe.roster.js'></script>
+    <script src='strophe.muc.js'></script>
+    <script src='strophe.disco.js'></script>
+    <script src='strophe.x.js'></script>
+    <script src='strophe.vcard.js'></script>
+    <script src='strophe.chatstates.js'></script>
+    <link rel='stylesheet' href='style.css'>
+    <script src='gab.js'></script>
+  </head>
+  <body>
+    <!-- login dialog -->
+    <div id='login-dialog' class='hidden'>
+      <form>
+      <fieldset>
+      <label for='jid'>帐号:</label>
+      <input type='text' id='jid' value='admin@yozosoft' class="text ui-widget-content ui-corner-all">
+      <label for='password'>密码:</label>
+      <input type='password' id='password' value='admin' class="text ui-widget-content ui-corner-all">
+      </fieldset>
+      </form>
+    </div>
+
+    <!-- contact dialog -->
+    <div id='add-a-roster-item-dialog' class='hidden'>
+      <form>
+      <fieldset>
+      <label for='new-contact-jid'>帐号:</label><input type='text' id='new-contact-jid' class="text ui-widget-content ui-corner-all">
+      <label for='new-contact-name'>昵称:</label><input type='text' id='new-contact-name' class="text ui-widget-content ui-corner-all">
+      <label for='new-contact-status'>附加信息:</label><input type='text' id='new-contact-status' class="text ui-widget-content ui-corner-all">
+      </fieldset>
+      </form>
+    </div>
+
+    <!-- chat dialog -->
+    <div id='chat-dialog' class='hidden'>
+      <label for='chat-jid'>帐号:</label><input type='text' id='chat-jid' class="text ui-widget-content ui-corner-all">
+    </div>
+
+    <!-- subscribe approval dialog -->
+    <div id='subscribe-approve-dialog' class='hidden'>
+      <p><span id='approve-jid'></span>向请求添加您为好友！</p>
+      <p>附加信息：<span id='approve-status'></span></p>
+      <fieldset>
+        <div id='authorize-and-add-radio'>
+          <input type="radio" checked="checked" value="authorize-and-add" class="radio" name="subscribe-approve-radio">
+          <span>同意并添加对方为好友</span>
+          <div>
+            <span>备注:</span>
+            <input type="text" value="" id="subscribe-name">
+            <span>附加信息:</span>
+            <input type="text" value="" id="subscribe-status">
+          </div>
+        </div>
+        <input type="radio" value="authorize" class="radio" name="subscribe-approve-radio">
+        <span>同意</span>
+        <input type="radio" value="unauthorize" class="radio" name="subscribe-approve-radio">
+        <span>拒绝</span>
+      </fieldset>
+    </div>
+
+    <!-- invite approval dialog -->
+    <div id='invite-member-dialog' class='hidden'>
+      <ul></ul>
+      <input type="button" id="btn1" value="全选" class="ui-button ui-widget ui-state-default ui-corner-all"> 
+      <input type="button" id="btn2" value="取消全选" class="ui-button ui-widget ui-state-default ui-corner-all">
+    </div>
+
+    <!-- invite approval dialog -->
+    <div id='invite-approve-dialog' class='hidden'></div>
+    
+    <!-- create chatroom dialog -->
+    <div id='create-chatroom-dialog' class='hidden'>
+      <form>
+      <fieldset>
+      <label for='roomname'>名称:</label>
+      <input type='text' id='roomname' value='goingmerry' class="text ui-widget-content ui-corner-all">@conference.yozosoft
+      <label for='roomtype'>房间类型:</label>
+      <select id="roomtype" class="text ui-widget-content ui-corner-all">
+        <option value="0">公共房间</option>
+        <option value="1">密码保护房间</option>
+        <option value="2">限制成员房间</option>
+      </select>
+      <label for='rpassword' class='hidden'>密码:</label>
+      <input type='password' id='rpassword' value='' class="text ui-widget-content ui-corner-all hidden">
+      </fieldset>
+      </form>
+    </div>
+
+    <!-- join chatroom dialog -->
+    <div id='join-chatroom-dialog' class='hidden'>
+      <form>
+      <fieldset>
+      <label for='jroomname'>名称:</label>
+      <input type='text' id='jroomname' value='goingmerry' class="text ui-widget-content ui-corner-all">@conference.localhost
+      <label for='jpassword'>密码:</label>
+      <input type='password' id='jpassword' value='' class="text ui-widget-content ui-corner-all">
+      </fieldset>
+      </form>
+    </div>
+
+    <div id='error-dialog' title='错误' class='hidden'><p></p></div>
+
+    <div id='yozoim-base' class='ui-widget ui-widget-header'>
+      <ul id="mainpanel">
+        <li id="yozoim-hide"></li>
+
+        <li id="vcard-panel">
+          <a href="#" class="vcard-tab">名片</a>
+          <div id='vcard-subpanel' class="ui-widget subpanel">
+            <h3 class="ui-widget-header"><span class="ui-icon ui-icon-minusthick">minusthick</span>我的资料</h3>
+            <ul class="ui-widget-content">
+              <li style="margin:5px 10px">
+                <label for='vcard-fn'>全名:</label><input type='text' id='vcard-fn' class="text ui-widget-content ui-corner-all">
+                <label for='vcard-number'>联系电话:</label><input type='text' id='vcard-number' class="text ui-widget-content ui-corner-all">
+                <label for='vcard-email'>Email地址:</label><input type='text' id='vcard-email' class="text ui-widget-content ui-corner-all">
+                <label for='vcard-website'>个人网站:</label><input type='text' id='vcard-website' class="text ui-widget-content ui-corner-all">
+                <label for='vcard-bday'>生日:</label><input type='text' id='vcard-bday' class="text ui-widget-content ui-corner-all">
+                <input type="button" class="vcardbutton" value="保存">
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li id="status-panel">
+          <a href="#" class="status-tab">状态</a>
+          <div id='status-subpanel' class="ui-widget subpanel">
+            <h3 class="ui-widget-header"><span class="ui-icon ui-icon-minusthick">minusthick</span>我的状态</h3>
+            <ul id="status-list" class="ui-widget-content">
+              <li style="margin:5px 10px">
+                <textarea id='mystatus' value='goingmerry' class="text ui-widget-content ui-corner-all" style="width:98%"></textarea>
+                选择状态类别
+                <select id="statustype" class="text ui-widget-content ui-corner-all">
+                  <option value="online">在线</option>
+                  <option value="chat">空闲</option>
+                  <option value="away">暂时离开</option>
+                  <option value="dnd">请勿打扰</option>
+                  <option value="xa">长时间离开</option>
+                </select>
+                <input type="button" class="statusbutton" value="设置状态" style="margin: 5px 0;">
+              </li>
+              <li class="item change_status"><a class='status' title="online">在线</a></li>
+              <li class="item change_status"><a class='status' title="chat">空闲</a></li>
+              <li class="item change_status"><a class='status' title="away">暂时离开</a></li>
+              <li class="item change_status"><a class='status' title="dnd">请勿打扰</a></li>
+              <li class="item change_status"><a class='status' title="xa">长时间离开</a></li>
+              <li class="item change_status"><a class='status' title="invisible">隐身</a></li>
+              <li class="item change_status"><a class='status' title="offline">离线</a></li>
+            </ul>
+          </div>
+        </li>
+        
+        <li id="roster-panel">
+          <a href="#" class="roster">联系人</a>
+          <div id='roster-subpanel' class="ui-widget subpanel">
+            <h3 class="ui-widget-header"><span class="ui-icon ui-icon-minusthick">minusthick</span>联系人</h3>
+            <ul id="contact-list" class="ui-widget-content"></ul>
+            <div class="ui-widget-header">
+            <a id='add-a-roster-item-link' href="#">添加联系人</a> | 
+            <a id='new-chat' href="#">新会话</a>
+            </div>
+          </div>
+        </li>
+
+        <li id="chatrooms-panel">
+          <a href="#" class="chatroom">聊天室</a>
+          <div id='chatrooms-area' class="ui-widget subpanel">
+            <h3 class="ui-widget-header"><span class="ui-icon ui-icon-minusthick">minusthick</span>聊天室</h3>
+            <ul id="chatrooms" class="ui-widget-content"></ul>
+            <div class="ui-widget-header"><a id='create-chatroom' href="#">创建/加入房间</a></div>
+          </div>
+        </li>
+        
+        <li id="chat-tags"></li>
+        
+      </ul>
+    </div>
+    
+    <div id='yozoim-hidden' class="ui-widget ui-widget-header">
+      <div id="yozoim-hidden-content"></div>
+    </div>
+    
+    <div id='chat-dialogs'></div>
+    <div id='muc-dialogs'></div>
+    <div id='vcard-dialogs'></div>
+    <div id='change-name-dialogs'></div>
+    <div id='set-subject-dialogs'></div>
+  </body>
+</html>

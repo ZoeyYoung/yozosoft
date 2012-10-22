@@ -1,0 +1,93 @@
+body { background:#7f7f7f url(images/background.gif) no-repeat left top; background-size:100%; padding:0; margin: 0; font:10px normal Verdana, Arial, Helvetica, sans-serif; height:100%; color:#111; }
+* { margin:0; padding:0; outline:none;}
+img { border:none; }
+h1 { font-size:1.2em; padding:5px 10px; color:#ccc; width:940px; margin: 0 auto; }
+h1 a { color:#fff; }
+h1 span {font-weight:normal;}
+ul, li { list-style:none; }
+.hidden { display:none; }
+label, input { display:block; }
+input.text { margin-bottom:12px; width:90%; padding: .4em; }
+fieldset { padding:0; border:0; margin-top:25px; }
+input,button,select,textarea{ outline:none; }
+textarea{ resize:none; border-color:#eee; overflow-x:hidden; overflow-y: auto; }
+.smileys-images { background-image: url(images/smileys.png); background-repeat: no-repeat; }
+.chat-messages { height:400px; overflow:auto; }
+.chat-text { margin:0; padding:10px 10px 0 70px;}
+.chat-input { width:100%; }
+.chat-message { margin:20px 0; }
+.chat-name, .chat-text { display:block; }
+.chat-msg-time { float:right; }
+.chat-message span { word-wrap:break-word; word-break:break-all; }
+.chat-name { color:#F03; font-weight:bold; float:left; }
+.me { color:#09F; font-weight:bold; }
+.chat-event { font-style:italic; font-size:75%; }
+.chat-message img.avatar { float:left; display:inline; border-radius:3px; -webkit-box-shadow:0 1px 2px #ccc; box-shadow:0 1px 2px #ccc; margin:0 15px 0 5px; }
+p.ui-xlgwr .ui-icon{ position:relative; float: left; margin:0.4em 0.5em 0 0.5em; cursor: pointer; z-index:999;}
+p.ui-xlgwr{ position:absolute; top:-1px; padding:0; right:0; display:inline;}
+a.online, a.room, a.status { color:#222; }
+a.away { color:#c33; }
+a.offline { color:#ccc; }
+
+#yozoim-base { position:fixed; bottom:0; left:0; z-index:9999;/*--Keeps the panel on top of all other elements--*/ border-bottom:none; width:98%; margin:0 1%; }
+/*--IE6 Hack - Fixed Positioning to the Bottom--*/
+*html #yozoim-base { margin-top: -1px;/*--prevents IE6 from having an infinity scroll bar - due to 1px border on #yozoim-base--*/ position:absolute; top:expression(eval(document.compatMode &&document.compatMode=='CSS1Compat') ? documentElement.scrollTop+(documentElement.clientHeight-this.clientHeight) : document.body.scrollTop +(document.body.clientHeight-this.clientHeight)); }
+#mainpanel { width:100%; border-top:1px solid #fff; /*--Gives the bevel feel on the panel--*/ }
+#chat-tags ul { border-top:none; }
+#mainpanel > li { position:relative; float:right; }
+#mainpanel > li > a { padding:5px; float:left; height:16px; text-decoration:none; position:relative; }
+html #yozoim-base ul li a:hover {	background-color:#eee; color:#111; }
+/*--Active state when subpanel is open--*/
+html #yozoim-base ul li a.active { height:18px; z-index:200; /*--Keeps the active area on top of the subpanel--*/ position:relative; }
+
+.roster-contact { float:left; }
+.remove-contact { float:right; cursor:pointer;}
+
+#chat-tags a.chat-tag, #roster-panel a.roster, #chatrooms-panel a.chatroom { width:176px; padding-left:9px; text-indent: 0;/*--Reset text indent--*/ text-align:center; }
+#chat-tags a { float:right; width:auto; text-decoration:none; padding:3px 10px; overflow:hidden; }
+/*--panel tool tip styles--*/
+#yozoim-base a small { text-align:center; width:70px; background:url(images/pop_arrow.gif) no-repeat center bottom; padding:5px 5px 11px; display:none; /*--Hide by default--*/ color: #fff; font-size:1em; text-indent:0; }
+#yozoim-base a:hover small{ display:block; /*--Show on hover--*/ position:absolute; top:-35px; /*--Position tooltip 35px above the list item--*/ left:50%; margin-left: -40px; /*--Center the tooltip--*/ z-index: 9999; }
+
+/*--Reset link style for subpanel links--*/
+#yozoim-base ul li div a { text-indent:0; width:auto; height:auto; padding:0; position:static; }
+#yozoim-base ul li div a:hover {	text-decoration:underline; }
+
+#yozoim-base .subpanel { position:absolute; right:0; bottom:32px; display:none;/*--Hide by default--*/ width:224px; overflow:hidden; background-color:#eee; }
+#yozoim-base h3 { padding:5px 10px; cursor:pointer; }
+#yozoim-base h3 span { font-size:1.5em; float:right; line-height:0.6em; }
+#yozoim-base .subpanel li{ float:none; /*--Reset float--*/overflow:hidden; clear:both; position:static; /*--Reset relative positioning--*/ }
+
+a.roster-contact { display:block; overflow:hidden; }
+.roster-contact span { padding:5px; float:left; }
+.roster-contact img { float:left; margin:3px 0; }
+.roster-contact:hover { background-color:#eee; cursor:pointer; }
+.occupant-item { float:left; clear:both; }
+.clear { clear: both; }
+.room-subject { font-size:150%; font-style:italic; font-weight:bold; margin-bottom:10px;}
+.leave { float:right; }
+.occupant-list { float:right; overflow:auto; width:18%; margin:10px 0; width:15%; }
+.notice { font-style:italic; font-weight:bold; color:#3d3; padding:5px; margin:10px 0; }
+.error { color: #d33; }
+.message { color: #aaa; }
+.nick { color:#f03; font-weight: bold; }
+.self { color: #09f; }
+.muc-chat-text { color: #000; padding:5px 0px; display:block; word-wrap:break-word; word-break:break-all; }
+.delayed { opacity: 0.5; }
+.private { background-color: #fdd; }
+.action { color: #333; }
+
+#yozoim-hide { background:url(images/hide.png) no-repeat top left; background-position:8px; cursor:pointer; float:right; height:18px; margin-left:1px; margin-top:1px; padding:6px 7px 0 7px; width:16px; }
+#yozoim-hidden { bottom:0px; cursor:pointer; display:none; position:fixed; right:20px; z-index:100000; }
+#yozoim-hidden-content { background:url(images/yozoim.png) no-repeat top left; background-position:7px -24px;
+border-top:1px solid white; height:25px; padding:0 7px; width:16px; }
+.contact-item, .item { height:30px; line-height:30px; float:left; margin:0 10px; font-weight:normal; }
+
+/*-- MUC Role --*/
+.moderator { color:#F03; }
+.participant { color:#64A51C; }
+.visitor { color:green; }
+/*-- MUC Affiliations --*/
+.owner { font-size:180%; }
+.admin { font-size:150%; }
+.member { }
